@@ -165,3 +165,17 @@ This command lets you view the word count. If you want the subcommand -l, say "w
         -   Want Q/Phred Quality Score of at LEAST 30 (prob of incorrect base cell: 1/1000; base call accuracy: 99.9%)
 
         -   Letters in quality encoding mean good quality data; symbols are horrible and numbers aren't good either
+
+<div>
+
+## 9.22.2926 - Day 3 of transcriptomics
+
+Today we set up our R working env and copied the data to import into DESeq2. The class got to the end of saving the pretty ggplot, but I got to the end of making the MA plot.
+
+### Data
+
+PCA to visualize global gene expression patterns (ggplot)
+
+![](myresults/PCA_allGens.png)
+
+</div>
