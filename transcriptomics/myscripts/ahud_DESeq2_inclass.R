@@ -3,6 +3,7 @@
 
 ## Set your working directory
 setwd("~/projects/eco_genomics_2026/transcriptomics")
+# This is the path to my working directory
 
 ## Import the libraries that we're likely to need in this session
 
@@ -36,7 +37,7 @@ conds <- read.delim("mydata/ahud_samples_R.txt", header=TRUE, stringsAsFactors =
 head(conds)
 
 
-conds <- read.delim("ahud_samples_R.txt", header=TRUE, stringsAsFactors = TRUE, row.names=1)
+conds <- read.delim("mydata/ahud_samples_R.txt", header=TRUE, stringsAsFactors = TRUE, row.names=1)
 head(conds)
 
 ####################################################
@@ -356,3 +357,22 @@ p
 
 # We can make an MA plot - what is it?
 plotMA(res_F0_OWvAM, ylim=c(-5,5))
+
+
+
+# We can make a heat map of the top differentially expressed genes
+########################################
+
+# Heatmap of top 20 genes sorted by pvalue
+
+library(pheatmap)
+
+# By environment
+vsd <- vst(dds_sub, blind=FALSE)
+
+topgenes <- head(rownames(res_F0_OWvAM),100)
+mat <- assay(vsd)[topgenes,]
+mat <- mat - rowMeans(mat)
+df <- as.data.frame(colData(dds_sub)[,c("generation","treatment")])
+pheatmap(mat, annotation_col=df)
+pheatmap(mat, annotation_col=df, cluster_cols = F)

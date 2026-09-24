@@ -166,9 +166,11 @@ This command lets you view the word count. If you want the subcommand -l, say "w
 
         -   Letters in quality encoding mean good quality data; symbols are horrible and numbers aren't good either
 
+        </div>
+
 <div>
 
-## 9.22.2926 - Day 3 of transcriptomics
+## 9.22.2026 - Day 3 of transcriptomics
 
 Today we set up our R working env and copied the data to import into DESeq2. The class got to the end of saving the pretty ggplot, but I got to the end of making the MA plot.
 
@@ -179,3 +181,19 @@ PCA to visualize global gene expression patterns (ggplot)
 ![](myresults/PCA_allGens.png)
 
 </div>
+
+</div>
+
+# 9.24.2026 Day 4 of Transcriptomics:
+
+**Overview**
+
+Today, we explored and overviewed basic R functions. We also reviewed pathways in R. I had issues with line 370 onward in ahud_DESeq2_inclass.R and plan to seek solutions next week.
+
+**R Functions**
+
+| Function Names      | Meaning/Purpose                          |
+|---------------------|------------------------------------------|
+| =                   | defines something                        |
+| \<--                | use when creating \_                     |
+| c(data, data, data) | c() encapsulates all data into one thing |
