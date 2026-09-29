@@ -18,6 +18,8 @@
 
 `~/projects/eco_genomics_2026/transcriptomics`
 
+**Copy Paste this to set working directory:** setwd("\~/projects/eco_genomics_2026/transcriptomics/mydata")
+
 **Input Files:**
 
 `none`
@@ -197,3 +199,33 @@ Today, we explored and overviewed basic R functions. We also reviewed pathways i
 | =                   | defines something                        |
 | \<--                | use when creating \_                     |
 | c(data, data, data) | c() encapsulates all data into one thing |
+
+</div>
+
+# 9.29.2026 Day 4 of Transcriptomics in Tutorials:
+
+**Overview**
+
+Today, we completed the Pespeni lab tutorial for Day 4 of Transcriptomics and analyzed data from plots we created.
+
+**New Code**
+
+``` r
+%in%
+```
+
+Asks: "is this a member of that group?"
+
+**Plots Created**
+
+![GGplot for counts of specific top interaction gene](mydata/9.29.26 GGplot for counts of specific top interaction gene.png){width="533"}
+
+![Make an MA plot. The x-axis shows mean value of normalized counts of that gene in the data set. The y-axis shows log fold change from ambient, which is the thick grey line at y=0. \# blue color shows significant genes; grey shows insignificant genes](mydata/9.29.26 MA plot.png){width="681"}
+
+![Volcano plot helps with differentiation and visualization.](mydata/9.29.26 Volcano plot.png)
+
+![Heatmap of top 20 genes sorted by p-value.](mydata/9.29.26 Heatmap of 20 genes sorted by pvalue.png)
+
+![Euler plot, which is better than a Venn diagram because it scales the size of the circles to sizes representative of data. This type of plot can get complicated with more treatments.](mydata/9.29.26 Euler plot.png)
+
+![Upset plot](mydata/9.29.26 Upset plot.png)
