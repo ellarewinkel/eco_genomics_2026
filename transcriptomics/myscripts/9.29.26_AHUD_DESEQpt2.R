@@ -71,6 +71,12 @@ head(res_OWAvsAM)
 summary(res_OWAvsAM)
 # interpreted from summary:
 # 9.3% (or 2343) of 25260 genes running were UPREGULATED (responding to new environment)
+# baseMean shows average counts per transcript
+# log2FoldChange (LFC) shows pos or neg value, showing up/down-regulation
+# lfcSE = LFC standard error
+# stat = significance (the sign of it doesn't matter; just indicates LFC)
+# p value = significance
+# padj = adjusted p value using correction factor (slightly less sig)
 
 
 res_OWvsAM <- results(dds_F0, name="treatment_OW_vs_AM", alpha=0.05)
@@ -304,3 +310,138 @@ upset(
   mainbar.y.label = "Number of DEGs",
   sets.x.label = "Total DEGs"
 )
+
+
+
+
+
+# Scatter plots to compare expression responses
+# Building from your script from last class focused on just the F0 generation, we will pull out the results from the OW vs AM contrast and compare to the OWA vs AM contrast.
+# Make sure you load your libraries, import the data, filter the data, run the DESeq model, and define your results dataframes before proceeding below…
+# merge and tidyverse’s mutate are the core functions for doing what we are about to do -> create a new data frame of the data we want to plot and create a new column of data based on the values in the data frame!
+
+#################################################################
+
+#### Scatter plot to assess how correlated are responses to OWA vs OW?
+
+#################################################################
+
+
+# Create merged data frame - need to use rownames because differences in filtering
+plot_OWA <- data.frame(
+  gene = rownames(res_OWAvsAM),
+  LFC_OWA = res_OWAvsAM$log2FoldChange,
+  padj_OWA = res_OWAvsAM$padj
+)
+# this pulls out LFC and adjusted p-value
+
+
+# now do the same for OW
+plot_OW <- data.frame(
+  gene = rownames(res_OWvsAM),
+  LFC_OW = res_OWvsAM$log2FoldChange,
+  padj_OW = res_OWvsAM$padj
+)
+
+
+# merge these two dataframes with merge function. merges them by gene (sorts/syncs)
+plot_df <- merge(plot_OWA,
+                 plot_OW,
+                 by = "gene")
+
+# Remove genes with missing LFC values
+plot_df <- plot_df %>%
+  filter(!is.na(LFC_OWA),
+         !is.na(LFC_OW))
+
+# Classify significance
+# tidyverse function %>% tells you a sequence of events: take the dataframe and mutate it
+# mutate function creates a new variable
+plot_df <- plot_df %>%
+  mutate(
+    SigGroup = case_when(
+      padj_OWA < 0.05 & padj_OW < 0.05 ~ "Both",
+      padj_OWA < 0.05 ~ "OWA only",
+      padj_OW < 0.05 ~ "OW only",
+      TRUE ~ "Neither"
+    )
+  )
+
+# Correlation for noting on the plot 
+r <- cor(plot_df$LFC_OWA,
+         plot_df$LFC_OW,
+         use = "complete.obs")
+
+# Arrange the genes by significant to make the plotting easier/more interesting to see
+# ggplot plots in the order of the df, so random
+# rearranging the order of the groups (ex: switching where it says Neither and Both) shows the layers of data differently
+plot_df$SigGroup <- factor(
+  plot_df$SigGroup,
+  levels = c("Neither", "OWA only", "OW only", "Both")
+)
+
+plot_df <- plot_df %>%
+  arrange(SigGroup)
+
+# Now make the plot!
+# aes within plot means "aesthetics"
+# alpha means transparency/opacity (0 = fully transparent; 1 = fully opaque)
+
+ggplot(plot_df,
+       aes(x = LFC_OW,
+           y = LFC_OWA,
+           color = SigGroup)) +
+  
+  geom_point(alpha = 0.6, size = 1.5) +
+  
+  # the dashed line, slope of 1 running through
+  geom_abline(intercept = 0,
+              slope = 1,
+              linetype = "dashed",
+              color = "black") +
+  
+  # hline is horizontal
+  geom_hline(yintercept = 0,
+             color = "grey70") +
+  
+  # vline is vertical
+  geom_vline(xintercept = 0,
+             color = "grey70") +
+  
+  # the r in here comes from the correlation above (at #370) that we saved as r
+  # we're telling it to put the correlation at xmin and ymax, then round to the 3rd decimal place
+  annotate("text",
+           x = min(plot_df$LFC_OW, na.rm = TRUE),
+           y = max(plot_df$LFC_OWA, na.rm = TRUE),
+           hjust = 0,
+           label = paste0("r = ", round(r, 3))) +
+  
+  scale_color_manual(values = c(
+    "Both" = "purple",
+    "OWA only" = "#CC3333",
+    "OW only" = "#00A08A",
+    "Neither" = "grey80"
+  )) +
+  
+  coord_fixed() + # forces the same scaling on x and y axes (so the slope is properly represented)
+  
+  labs(
+    x = "Log2 Fold Change: OW vs AM",
+    y = "Log2 Fold Change: OWA vs AM",
+    color = "",
+    title = "GE Responses to OW relative to OWA"
+  ) +
+  
+  # base_size is making the text size 14
+  theme_bw(base_size = 14) +
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "right"
+  )
+
+
+
+# Let’s test for functional enrichment using annotated GO categories for each gene and the TopGO program.
+# First, you’ll need two files transcript_universe.csv and trinotate_annotation_GOblastx_forTopGO.txt that you can find in our class directory, /gpfs1/cl/biol3990/Transcriptomics/GOenrichment, and cp over to your mydata directory
+# The first step is to create the saved results files with the correct trinity ids
+

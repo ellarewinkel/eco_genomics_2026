@@ -218,14 +218,38 @@ Asks: "is this a member of that group?"
 
 **Plots Created**
 
-![GGplot for counts of specific top interaction gene](mydata/9.29.26 GGplot for counts of specific top interaction gene.png){width="533"}
+![GGplot for counts of specific top interaction gene](mydata/9.29.26%20GGplot%20for%20counts%20of%20specific%20top%20interaction%20gene.png){width="533"}
 
-![Make an MA plot. The x-axis shows mean value of normalized counts of that gene in the data set. The y-axis shows log fold change from ambient, which is the thick grey line at y=0. \# blue color shows significant genes; grey shows insignificant genes](mydata/9.29.26 MA plot.png){width="681"}
+![Make an MA plot. The x-axis shows mean value of normalized counts of that gene in the data set. The y-axis shows log fold change from ambient, which is the thick grey line at y=0. \# blue color shows significant genes; grey shows insignificant genes](mydata/9.29.26%20MA%20plot.png){width="681"}
 
-![Volcano plot helps with differentiation and visualization.](mydata/9.29.26 Volcano plot.png)
+![Volcano plot helps with differentiation and visualization.](mydata/9.29.26%20Volcano%20plot.png)
 
-![Heatmap of top 20 genes sorted by p-value.](mydata/9.29.26 Heatmap of 20 genes sorted by pvalue.png)
+![Heatmap of top 20 genes sorted by p-value.](mydata/9.29.26%20Heatmap%20of%2020%20genes%20sorted%20by%20pvalue.png)
 
-![Euler plot, which is better than a Venn diagram because it scales the size of the circles to sizes representative of data. This type of plot can get complicated with more treatments.](mydata/9.29.26 Euler plot.png)
+![Euler plot, which is better than a Venn diagram because it scales the size of the circles to sizes representative of data. This type of plot can get complicated with more treatments.](mydata/9.29.26%20Euler%20plot.png)
 
-![Upset plot](mydata/9.29.26 Upset plot.png)
+![Upset plot](mydata/9.29.26%20Upset%20plot.png)
+
+</div>
+
+# 10.01.2026 Day 5 of Transcriptomics
+
+**Overview**
+
+Today, we used a scatterplot to compare expression response to OW relative to OWA (and each vs AM control). We filtered the data, annotated/classified genes, ordered results, and visualized with ggplot.
+
+**Code**
+
+We used four tidyverse (dplyr) functions:
+
+-   filter() to remove rows
+
+-   mutate() to add a new variable
+
+-   case_when() to classify genes into categories
+
+-   arrange() to sort the rows
+
+**Plots**
+
+![GGplot showing GE responses to OW relative to OWA. Looks at logfold change (LFC). The section for Both (purple), aligning with expectations, is mainly only upregulated or downregulated, following along the 1:1 line well, but not much near 0 (We filtered out the responses that were not significant.). For OW only (green), there is a magnitude of change spread out across x-axis for LFC between OW vs AM. For OWA only, it's vertical following y-axis which shows LFC for OWA vs AM. The "Neither" (gray) is plotted, despite filtering for significance, and shows massive LFC. "Neither" responses show up due to consistency across biological replicates (They have a lot of variation among replicates, so they are not significant due to not being consistently different.).](mydata/9.29.26 Day 5 ggplot.png)
