@@ -90,7 +90,7 @@ res_OAsAM <- res_OAvsAM[order(res_OAvsAM$padj),]
 head(res_OAvsAM) 
 summary(res_OAvsAM)
 
-# results show that OA has less of an inmpact
+# results show that OA has less of an impact
 
 
 

@@ -252,4 +252,36 @@ We used four tidyverse (dplyr) functions:
 
 **Plots**
 
-![GGplot showing GE responses to OW relative to OWA. Looks at logfold change (LFC). The section for Both (purple), aligning with expectations, is mainly only upregulated or downregulated, following along the 1:1 line well, but not much near 0 (We filtered out the responses that were not significant.). For OW only (green), there is a magnitude of change spread out across x-axis for LFC between OW vs AM. For OWA only, it's vertical following y-axis which shows LFC for OWA vs AM. The "Neither" (gray) is plotted, despite filtering for significance, and shows massive LFC. "Neither" responses show up due to consistency across biological replicates (They have a lot of variation among replicates, so they are not significant due to not being consistently different.).](mydata/9.29.26 Day 5 ggplot.png)
+![GGplot showing GE responses to OW relative to OWA. Looks at logfold change (LFC). The section for Both (purple), aligning with expectations, is mainly only upregulated or downregulated, following along the 1:1 line well, but not much near 0 (We filtered out the responses that were not significant.). For OW only (green), there is a magnitude of change spread out across x-axis for LFC between OW vs AM. For OWA only, it's vertical following y-axis which shows LFC for OWA vs AM. The "Neither" (gray) is plotted, despite filtering for significance, and shows massive LFC. "Neither" responses show up due to consistency across biological replicates (They have a lot of variation among replicates, so they are not significant due to not being consistently different.).](mydata/9.29.26%20Day%205%20ggplot.png)
+
+</div>
+
+# 10.6.2026 Transcriptomics Day 6: GO
+
+**Overview**
+
+We used the TopGO program to perform GO (Gene Ontology) analyses. We created bubble plots to visualize these analyses. We also began WGCNA analysis with the data from the TopGO analyses, but will pick up on bwnet in a future class, as it uses a lot of memory.
+
+**Notes**
+
+In bubble plots, just printing the number of significant genes per category may be misleading because it doesn't take into account the number of genes in the category as a whole.
+
+**GO Plots**
+
+![Figure 1. Bubble plot of significant genes in OWA vs AM.](mydata/10.6.2026 Bubble plot of Significant Genes in OWA vs AM.png)
+
+![Figure 2. Bubble plot of significant genes in OW vs AM.](mydata/10.6.2026 Bubble plot of Significant Genes in OW vs AM.png)
+
+![Bubble plot of significant genes in OA vs AM.](mydata/10.6.2026 Bubble plot of Significant Genes in OA vs AM.png)
+
+**Discussion of GO Plots**
+
+-   OWA could cause stress that cause behavioral response to nicotine to be a more significant gene (chemical response)
+
+**WGCNA Plots**
+
+![Cluster Dendrogram](images/clipboard-3254822933.png)
+
+![This is what the data looks like without organization.](images/clipboard-2955715868.png)
+
+![GGplot used to visualize picked power.](images/clipboard-2013019489.png)
