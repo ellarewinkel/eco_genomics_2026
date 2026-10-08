@@ -268,11 +268,11 @@ In bubble plots, just printing the number of significant genes per category may 
 
 **GO Plots**
 
-![Figure 1. Bubble plot of significant genes in OWA vs AM.](mydata/10.6.2026 Bubble plot of Significant Genes in OWA vs AM.png)
+![Figure 1. Bubble plot of significant genes in OWA vs AM.](mydata/10.6.2026%20Bubble%20plot%20of%20Significant%20Genes%20in%20OWA%20vs%20AM.png)
 
-![Figure 2. Bubble plot of significant genes in OW vs AM.](mydata/10.6.2026 Bubble plot of Significant Genes in OW vs AM.png)
+![Figure 2. Bubble plot of significant genes in OW vs AM.](mydata/10.6.2026%20Bubble%20plot%20of%20Significant%20Genes%20in%20OW%20vs%20AM.png)
 
-![Bubble plot of significant genes in OA vs AM.](mydata/10.6.2026 Bubble plot of Significant Genes in OA vs AM.png)
+![Bubble plot of significant genes in OA vs AM.](mydata/10.6.2026%20Bubble%20plot%20of%20Significant%20Genes%20in%20OA%20vs%20AM.png)
 
 **Discussion of GO Plots**
 
@@ -285,3 +285,45 @@ In bubble plots, just printing the number of significant genes per category may 
 ![This is what the data looks like without organization.](images/clipboard-2955715868.png)
 
 ![GGplot used to visualize picked power.](images/clipboard-2013019489.png)
+
+</div>
+
+# 10.8.2026 Transcriptomics Day 7: WGCNA Continued
+
+**Overview**
+
+We continued WGCNA analysis and engaged in an open workshop for Homework #1. I chose to attack Question #1:
+
+1.  How do the differences in gene expression between AM and OWA change across the generations (F0, F4, F11)? To address this question, in DESeq2 subset by generation and pull-out specific contrasts, compare results – number of differentially expressed genes, a Venn could be a good tool for visualization here. Does GO functional enrichment change?
+
+**Observations of CorLevelPlot heatmap:**
+
+-   Will not run without running huge file (bwnet.rds) before, which we chose not to run last class due to data used and time limit. If you absolutely need to run it, put in 65GB of memory.
+
+**Module Gene Mapping (as.data.frame(bwnet\$colors))**
+
+-   We could run gene ontology to find biological functions associated with survival.
+
+**WGCNA**
+
+-   Grouping genes that act similarly across samples
+
+-   Transcriptomics: Don't need to know every statistical/coding nuances, just create in methodology that is correct and making sure you can interpret the biological meaning of the outputs.
+
+**Plots**
+
+![Cluster dendrogram.](images/clipboard-995486496.png)
+
+![Heat map.](images/clipboard-2346366388.png)
+
+![Line interaction plot of a particular module engine.](images/clipboard-1317125347.png){alt="GGplot."}
+
+![GGplot to display individual driver genes identified by intramodular analysis.](images/clipboard-2514754068.png)
+
+![Heat map of gene expressions within purple module.](images/clipboard-3505112335.png)
+
+![Heat map of gene expression within yellow module. Yellow-to-blue color scheme.](images/clipboard-141883762.png)
+
+**HW #1 Script Notes**
+
+-   First extract by treatment, then subset by generation

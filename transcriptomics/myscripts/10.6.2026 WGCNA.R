@@ -155,3 +155,232 @@ norm.counts[] <- sapply(norm.counts, as.numeric)
 soft_power <- 6 # should try running with 7 based on R^2
 temp_cor <- cor
 cor <- WGCNA::cor # use the 'cor' function from the WGCNA package
+
+# open bwnet.rds instead of running super data-sucking code to find blockwise modules
+# can find this code in Tutorials
+# # this step also takes a few minutes; ideally your maxBlockSize is larger than your number of genes to run the memory-intensive network construction all at once.
+
+
+# TOMtype (Topological Overlap Matrix type) parameter - unsigned - doesn't consider positive/negative co-expression
+# signed - when you want to consider the direction of co-expression interaction, e.g., activating or inhibiting
+# WGCNA often uses a dendrogram-based approach to identify modules. The choice of the 
+# height cut in the dendrogram can determine the number of modules. Selecting a higher
+# cut height results in fewer, larger modules, while a lower cut height leads to more, 
+# smaller modules.
+
+
+
+
+# 5. Module Eigengenes ---------------------------------------------------------
+module_eigengenes <- bwnet$MEs
+
+head(module_eigengenes)
+
+
+# get number of genes for each module
+table(bwnet$colors)
+
+# Plot the dendrogram and the module colors before and after merging underneath
+plotDendroAndColors(bwnet$dendrograms[[1]], cbind(bwnet$unmergedColors, bwnet$colors),
+                    c("unmerged", "merged"),
+                    dendroLabels = FALSE,
+                    addGuide = TRUE,
+                    hang= 0.03,
+                    guideHang = 0.05)
+
+# grey module = all genes that doesn't fall into other modules were assigned to the grey module
+# with higher soft power, more genes fall into the grey module
+
+
+# 6A. Relate modules to traits --------------------------------------------------
+# module trait associations
+
+traits <- sample_metadata[, c(5,8,11,14,17)]
+
+
+# Define numbers of genes and samples
+nSamples <- nrow(norm.counts)
+nGenes <- ncol(norm.counts)
+
+
+module.trait.corr <- cor(module_eigengenes, traits, use = 'p')
+module.trait.corr.pvals <- corPvalueStudent(module.trait.corr, nSamples)
+
+
+
+# visualize module-trait association as a heatmap
+
+heatmap.data <- merge(module_eigengenes, traits, by = 'row.names')
+
+head(heatmap.data)
+
+heatmap.data <- heatmap.data %>% 
+  column_to_rownames(var = 'Row.names')
+
+
+names(heatmap.data)
+
+CorLevelPlot(heatmap.data,
+             x = names(heatmap.data)[12:16],
+             y = names(heatmap.data)[1:11],
+             col = c("blue1", "skyblue", "white", "pink", "red"))
+
+
+
+module.gene.mapping <- as.data.frame(bwnet$colors) # assigns module membership to each gene
+module.gene.mapping %>% 
+  filter(`bwnet$colors` == 'yellow') %>% 
+  rownames()
+
+groups <- sample_metadata[,c(3,1)]
+module_eigengene.metadata <- merge(groups, heatmap.data, by = 'row.names')
+
+#Create a summary data frame of a particular module eigengene information
+MEyellow_summary <- summarySE(module_eigengene.metadata, measurevar="MEyellow", groupvars=c("Generation","treatment"))
+
+#Plot a line interaction plot of a particular module eigengene
+ggplot(MEyellow_summary, aes(x=as.factor(Generation), y=MEyellow, color=treatment, fill = treatment, shape = treatment)) +
+  geom_point(size=5, stroke = 1.5 ) +
+  geom_errorbar(aes(ymin=MEyellow-se, ymax=MEyellow+se), width=.15) +
+  geom_line(aes(color=treatment, group=treatment, linetype = treatment)) +
+  scale_color_manual(values = c('#6699CC',"#F2AD00","#00A08A", "#CC3333")) +
+  scale_shape_manual(values=c(21,22,23,24), labels = c("Ambient", "Acidification","Warming", "OWA"))+
+  scale_fill_manual(values=c('#6699CC',"#F2AD00","#00A08A", "#CC3333"), labels = c("Ambient", "Acidification","Warming", "OWA"))+
+  xlab("Generation") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 4))+
+  theme(text = element_text(size = 20)) +
+  theme(panel.grid.minor.y = element_blank(), legend.position = "none", plot.margin = margin(0,6,0,6))
+
+
+# 6B. Intramodular analysis: Identifying driver genes ---------------
+
+# Get top hub genes (genes with highest connectivity in the network)
+hubs  <-  chooseTopHubInEachModule(norm.counts, bwnet$colors, type = "signed", omitColors = "")
+hubs
+
+### Plot Individual genes  to check! ### 
+
+d <-plotCounts(dds, gene="TRINITY_DN11845_c0_g1::TRINITY_DN11845_c0_g1_i9::g.36434::m.36434", intgroup = (c("treatment","Generation")), returnData=TRUE)
+d_summary <- summarySE(d, measurevar = "count", groupvars=c("Generation","treatment"))
+
+ggplot(d_summary, aes(x=as.factor(Generation), y=count, color=treatment, fill = treatment, shape = treatment)) +
+  geom_point(size=5, stroke = 1.5 ) +
+  geom_errorbar(aes(ymin=count-se, ymax=count+se), width=.15) +
+  geom_line(aes(color=treatment, group=treatment, linetype = treatment)) +
+  scale_color_manual(values = c('#6699CC',"#F2AD00","#00A08A", "#CC3333")) +
+  scale_shape_manual(values=c(21,22,23,24), labels = c("Ambient", "Acidification","Warming", "OWA"))+
+  scale_fill_manual(values=c('#6699CC',"#F2AD00","#00A08A", "#CC3333"), labels = c("Ambient", "Acidification","Warming", "OWA"))+
+  xlab("Generation") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 4))+
+  theme(text = element_text(size = 20)) +
+  theme(panel.grid.minor.y = element_blank(), legend.position = "none", plot.margin = margin(0,6,0,6))
+
+# Make a heat map of gene expressions within modules.
+# Use the norm.counts matrix, subset based on module membership
+library(pheatmap)
+t_norm.counts <- norm.counts %>% t() %>% as.data.frame()
+
+# purple module
+purple_transcripts <- module.gene.mapping %>% 
+  filter(`bwnet$colors` == 'purple') %>% 
+  rownames()
+
+t_norm.counts_purple <- t_norm.counts %>% 
+  filter(row.names(t_norm.counts) %in% purple_transcripts)
+
+t_norm.counts_purple <- t_norm.counts_purple - rowMeans(t_norm.counts_purple)
+df <- as.data.frame(colData(dds)[,c("Generation","treatment")])
+
+#blue to yellow heatmap color scheme; plot purple module genes
+paletteLength <- 50
+myColor <- colorRampPalette(c("dodgerblue", "white", "yellow"))(paletteLength)
+myBreaks <- c(seq(min(t_norm.counts_purple), 0, length.out=ceiling(paletteLength/2) + 1), 
+              seq(max(t_norm.counts_purple)/paletteLength, max(t_norm.counts_purple), length.out=floor(paletteLength/2)))
+pheatmap(t_norm.counts_purple, color = myColor, breaks = myBreaks,
+         show_colnames = FALSE, show_rownames = FALSE, annotation_col = df, main = "purple")
+
+
+# yellow module
+yellow_transcripts <- module.gene.mapping %>% 
+  filter(`bwnet$colors` == 'yellow') %>% 
+  rownames()
+
+t_norm.counts_yellow <- t_norm.counts %>% 
+  filter(row.names(t_norm.counts) %in% yellow_transcripts)
+
+t_norm.counts_yellow <- t_norm.counts_yellow - rowMeans(t_norm.counts_yellow)
+df <- as.data.frame(colData(dds)[,c("generation","treatment")]) # Change generation (values) to Generations (categories)
+
+#blue to yellow heatmap color scheme; yellow module
+paletteLength <- 50
+myColor <- colorRampPalette(c("dodgerblue", "white", "yellow"))(paletteLength)
+myBreaks <- c(seq(min(t_norm.counts_yellow), 0, length.out=ceiling(paletteLength/2) + 1), 
+              seq(max(t_norm.counts_yellow)/paletteLength, max(t_norm.counts_yellow), length.out=floor(paletteLength/2)))
+pheatmap(t_norm.counts_yellow, color = myColor, breaks = myBreaks,
+         show_colnames = FALSE, show_rownames = FALSE, annotation_col = df, main = "yellow")
+
+
+
+
+
+# Calculate the module membership and the associated p-values
+
+# The module membership/intramodular connectivity is calculated as the correlation of the eigengene and the gene expression profile. 
+# This quantifies the similarity of all genes on the array to every module.
+
+module.membership.measure <- cor(module_eigengenes, norm.counts, use = 'p')
+module.membership.measure.pvals <- corPvalueStudent(module.membership.measure, nSamples)
+
+
+module.membership.measure.pvals[1:10,1:10]
+
+
+
+###########################################
+# Saving for the future and for TopGO analyses
+###########################################
+
+module.gene.mapping$geneID <- rownames(module.gene.mapping)
+
+parts <- strsplit(module.gene.mapping$geneID, "::")
+
+module.gene.mapping$shortID <- sapply(
+  parts,
+  function(x) paste(x[1:2], collapse = "::")
+)
+
+write.csv(
+  module.gene.mapping,
+  "myresults/WGCNA_module_gene_mapping_w_shortIDs.csv",
+  row.names = FALSE
+)
+
+############################################################
+# Extract yellow module genes for TopGO
+############################################################
+
+yellow_shortIDs <- unique(
+  module.gene.mapping$shortID[
+    module.gene.mapping$`bwnet$colors` == "yellow"
+  ]
+)
+
+length(yellow_shortIDs) # 981
+
+head(yellow_shortIDs)
+
+
+write.csv(
+  data.frame(shortID = yellow_shortIDs),
+  "myresults/yellow_module_genes.csv",
+  row.names = FALSE
+)
+
+# Now you can add and edit code to run TopGO
+# to test for functional enrichment within the genes of the yellow module!
+# Or you code edit the code above to test for functional enrichment for any module you find interesting.
+# Go back to the correlation heatmap to see which modules might be interesting based on their correlations with specific traits.
