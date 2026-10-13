@@ -316,7 +316,7 @@ We continued WGCNA analysis and engaged in an open workshop for Homework #1. I c
 
 ![Heat map.](images/clipboard-2346366388.png)
 
-![Line interaction plot of a particular module engine.](images/clipboard-1317125347.png){alt="GGplot."}
+![GGplot.](images/clipboard-1317125347.png)
 
 ![GGplot to display individual driver genes identified by intramodular analysis.](images/clipboard-2514754068.png)
 
