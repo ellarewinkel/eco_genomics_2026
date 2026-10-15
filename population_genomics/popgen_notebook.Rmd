@@ -20,3 +20,6 @@ Today, we began working with VCF (Variant Call Format) files, which have two par
 2.  Body: one line per variant
 
 We ended with 3.5: Reading a variant record, and have not yet begun 3.6 in the tutorial for Day 1.
+
+# 10.15.2026 Working with Population Genomics: Class 2
+Today, we updated our .gitignore file to push our work from Class 1.
