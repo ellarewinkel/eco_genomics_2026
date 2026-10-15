@@ -1,5 +1,7 @@
 ##Lets first create a new folder for our new module
 
+cp /gpfs1/cl/biol3990/PopulationGenomics/VCF/*.vcf* /gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics
+
 ### go to your ecol genomics folder something like: "~/projects/eco_genomics_2026/" and make your new directory
 mkdir -p population_genomics 
 

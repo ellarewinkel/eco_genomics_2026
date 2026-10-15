@@ -22,4 +22,35 @@ Today, we began working with VCF (Variant Call Format) files, which have two par
 We ended with 3.5: Reading a variant record, and have not yet begun 3.6 in the tutorial for Day 1.
 
 # 10.15.2026 Working with Population Genomics: Class 2
-Today, we updated our .gitignore file to push our work from Class 1.
+Today, we updated our .gitignore file to push our work from Class 1. We looked at the NIH (Natiional Library of Medicine), and in doing so, learned that we can find SRA Data for a species if we search for it. This is where we got the data for our VCFs. We learned that the pathway from last class was incorrect, so we updated it in the 10.13.2026 script.
+
+We had to delete the new mydata files from Tuesday (which I did in the Vacc website under Files and then Home Directory) and add the corrected ones with this: 
+
+cp /gpfs1/cl/biol3990/PopulationGenomics/VCF/*.vcf* /gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/mydata
+
+In Terminal: 
+
+nano
+
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=5G 
+#SBATCH --time=1:00:00
+#SBATCH --output=./logs/%x.%j.out
+#SBATCH --error=./logs/%x.%j.err
+#SBATCH --mail-type=END 
+#SBATCH --mail-user=erewinke@uvm.edu
+
+cd ~/gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/mydata
+
+module load gcc
+module load vcftools
+
+vcftools --gzvcf Lottia_gigantea_pl_flt3.renamed.vcf.gz --missing-indv --out missing_data
+vcftools --gzvcf Lottia_gigantea_pl_flt3_renamed.vcf.gz --depth --out depth_data
+
+(now do CTRL S to submit the job and title/ID it as "vcf_stats.sh)
+
+Just so you know (we didn't do this):
+squeue -u $USER          # check your jobs (PD = pending, R = running)
+scancel <jobid>          # cancel a job if you need to
