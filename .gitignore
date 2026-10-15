@@ -5,4 +5,5 @@
 .RData
 .Ruserdata
 *.Rproj
-./transcriptomics/mydata
+transcriptomics/mydata
+~/projects/eco_genomics_2026/population_genomics/mydata

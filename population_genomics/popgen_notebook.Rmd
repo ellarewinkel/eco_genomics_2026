@@ -1,0 +1,22 @@
+---
+title: "popgen_notebook"
+output: html_document
+---
+
+# Population Genomics Notebook
+
+**Course:** Intro to Ecological Genomics **Name:** Ella Rewinkel
+
+\<\div\>
+
+# 10.13.2026 Working with Population Genomics: Class 1
+
+**Overview**
+
+Today, we began working with VCF (Variant Call Format) files, which have two parts:
+
+1.  Header: lines starting with \## that record how the file was made and define every field used in it
+
+2.  Body: one line per variant
+
+We ended with 3.5: Reading a variant record, and have not yet begun 3.6 in the tutorial for Day 1.
