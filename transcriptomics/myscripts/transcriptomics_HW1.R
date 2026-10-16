@@ -16,15 +16,12 @@ library(scales)
 library(ggpubr)
 library(wesanderson)
 library(vsn)
+library(topGO)
 
 
 ####################################################
-
-### Import our data
-
+# Import our data
 ####################################################
-
-
 # Import the counts matrix
 countsTable <- read.table("salmon.isoform.counts.matrix.filteredAssembly", header=TRUE, row.names=1)
 head(countsTable)
@@ -71,15 +68,11 @@ dds_AM_OWA_F0 <- DESeq(dds_AM_OWA_F0)
 resultsNames(dds_AM_OWA_F0)
 # [1] "Intercept"           "treatment_OWA_vs_AM"
 
-
-###### LOOK HERE (my question from monday night: is this correct OR...
-############ ...must I differentiate the res names by treatment here too to get what I'm looking for?
-############ I copy pasted this part from the 10.6.2026 code
-res_OWAvsAM <- results(dds_F0, name="treatment_OWA_vs_AM", alpha=0.05)
-res_OWAvsAM <- res_OWAvsAM[order(res_OWAvsAM$padj),] # sort by significance
-head(res_OWAvsAM)  
-summary(res_OWAvsAM)
-# interpreted from summary:
+res_OWAvsAMF0 <- results(dds_AM_OWA_F0, name="treatment_OWA_vs_AM", alpha=0.05)
+res_OWAvsAMF0 <- res_OWAvsAMF0[order(res_OWAvsAMF0$padj),] # sort by significance
+head(res_OWAvsAMF0)  
+summary(res_OWAvsAMF0)
+# notes: interpreted from summary of OWA vs AM (NOT subsetted by generation. must update this):
 # 9.3% (or 2343) of 25260 genes running were UPREGULATED (responding to new environment)
 # baseMean shows average counts per transcript
 # log2FoldChange (LFC) shows pos or neg value, showing up/down-regulation
@@ -88,13 +81,17 @@ summary(res_OWAvsAM)
 # p value = significance
 # padj = adjusted p value using correction factor (slightly less sig)
 
-
-
+write.csv(
+  res_OWAvsAMF0.df,
+  "myresults/OWAvsAMF0_results.csv",
+  row.names = FALSE
+)
 
 #######
 # F4 #
 #######
-dds_AM_OWA_F4<- subset(dds, select = treatment %in% c("AM", "OWA") & generation == "F4")
+
+dds_AM_OWA_F4 <- subset(dds, select = treatment %in% c("AM", "OWA") & generation == "F4")
 dds_AM_OWA_F4$treatment <- droplevels(dds_AM_OWA_F4$treatment)
 dds_AM_OWA_F4$treatment <- relevel(dds_AM_OWA_F4$treatment, ref = "AM")
 
@@ -106,7 +103,27 @@ dds_AM_OWA_F4 <- DESeq(dds_AM_OWA_F4)
 resultsNames(dds_AM_OWA_F4)
 # [1] "Intercept"           "treatment_OWA_vs_AM"
 
+res_OWAvsAMF4 <- results(dds_AM_OWA_F4, name="treatment_OWA_vs_AM", alpha=0.05)
+res_OWAvsAMF4 <- res_OWAvsAMF4[order(res_OWAvsAMF4$padj),]
+head(res_OWAvsAMF4)
+summary(res_OWAvsAMF4)
 
+#? until before F11
+res_OWAvsAMF4.df <- as.data.frame(res_OWAvsAM)
+res_OWAvsAM.df$fullID <- rownames(res_OWAvsAM.df)
+
+parts <- strsplit(res_OWAvsAM.df$fullID, "::")
+
+res_OWAvsAMF4.df$shortID <- sapply()
+  parts,
+  function(x) paste(x[1:2], collapse="::")
+)
+
+write.csv(
+  res_OWAvsAMF4.df,
+  "myresults/OWAvsAMF4_results.csv",
+  row.names = FALSE
+)
 
 #######
 # F11 #
@@ -123,66 +140,144 @@ dds_AM_OWA_F11 <- DESeq(dds_AM_OWA_F11)
 resultsNames(dds_AM_OWA_F11)
 # [1] "Intercept"           "treatment_OWA_vs_AM"
 
+res_OWAvsAMF11 <- results(dds_AM_OWA_F11, name="treatment_OWA_vs_AM", alpha=0.05)
+res_OWAvsAMF11 <- res_OWAvsAMF11[order(res_OWAvsAMF11$padj),]
+head(res_OWAvsAMF11)
+summary(res_OWAvsAMF11)
+
+### GO Analysis on OWA vs AM Overall (not by generation)
+library(topGO)
+
+run_topGO_contrast <- function(
+    infile,
+    outfile,
+    ontology = "BP",
+    padj.cutoff = 0.05){
+  
+  deseq <- read.csv(
+    infile,
+    stringsAsFactors = FALSE
+  )
+  
+  deseq <- subset(
+    deseq,
+    !is.na(padj)
+  )
+  
+  geneList <- factor(
+    as.integer(deseq$padj < padj.cutoff)
+  )
+  
+  names(geneList) <- deseq$shortID
+  
+  cat("\nGenes tested:",
+      length(geneList))
+  
+  cat("\nSignificant genes:",
+      sum(geneList == 1),
+      "\n")
+  
+  GOdata <- new(
+    "topGOdata",
+    ontology = ontology,
+    allGenes = geneList,
+    geneSelectionFun = function(x) x == 1,
+    annot = annFUN.gene2GO,
+    gene2GO = geneID2GO.filtered
+  )
+  
+  resultWeight <- runTest(
+    GOdata,
+    algorithm = "weight01",
+    statistic = "fisher"
+  )
+  
+  GOresults <- GenTable(
+    GOdata,
+    weightFisher = resultWeight,
+    orderBy = "weightFisher",
+    topNodes = 100
+  )
+  
+  write.csv(
+    GOresults,
+    outfile,
+    row.names = FALSE
+  )
+  
+  return(GOresults)
+}
+
+GO_OWA <- run_topGO_contrast(
+  "myresults/F0_OWAvsAM_results.csv",
+  "myresults/GO_F0_OWAvsAM_BP.csv"
+)
+# Genes tested: 24259
+# Significant genes: 3918
 
 
-####################################
-# below is my old work before getting corrected by Danny,
-# so take with grain of salt!
-########################################################
-dds <- DESeqDataSetFromMatrix(countData = countsTableRound, colData=conds, 
-                              design= ~ treatment) # normalizes data
+go <- read.csv(
+  "myresults/GO_F0_OWAvsAM_BP.csv",
+  stringsAsFactors = FALSE
+)
 
-dim(dds)
-# [1] 67916     38
+go$weightFisher <- gsub("^<\\s*", "", go$weightFisher)
 
-# Filter 
-dds <- dds[rowSums(counts(dds) >= 15) >= 28,]
-nrow(dds) 
-# [1] 25260
+go$weightFisher <- as.numeric(go$weightFisher)
 
-# Subset the DESeqDataSet to the specific level of the "generation" factor
-dds_F0 <- subset(dds, select = generation == 'F0')
-dim(dds_F0)
-# [1] 25260    12
+# Convert counts to numeric
+go$Significant <- as.numeric(go$Significant)
 
-dds_F4 <- subset(dds, select = generation == 'F4')
-dim(dds_F4)
-# [1] 25260    12
+# Create -log10(p)
+go$minusLogP <- -log10(go$weightFisher)
 
-dds_F11 <- subset(dds, select = generation == 'F11')
-dim(dds_F11)
-# [1] 25260     6
+# Keep top 10 GO terms
+go_top10 <- go %>%
+  arrange(weightFisher) %>%
+  slice(1:10)
 
-# Perform DESeq2 analysis on the subset
-# This looks at the effect of generation, NOT treatment
-# because F0 is the first generation so there is no effect of treatment
-dds_F0 <- DESeq(dds_F0)
+# Order terms for plotting
+go_top10$Term <- factor(
+  go_top10$Term,
+  levels = rev(go_top10$Term)
+)
 
-dds_F4 <- DESeq(dds_F4)
+# Bubble plot
+ggplot(
+  go_top10,
+  aes(
+    x = minusLogP,
+    y = Term
+  )
+) +
+  geom_point(
+    aes(
+      size = Significant,
+      color = minusLogP
+    )
+  ) +
+  scale_color_viridis_c() +
+  theme_bw(base_size = 14) +
+  labs(
+    title = "Top GO Terms: OWA vs AM",
+    x = expression(-logp),
+    y = "GO Term",
+    color = expression(-logp),
+    size = "Significant\nGenes"
+  )
 
-dds_F11 <- DESeq(dds_F11)
-# this one won't run (ERROR) right now; the other generations have 12 variables to compare
-# but this one only has 6 (3 AM; 6 OWA)
+### GO Contrasts
+GO_OA <- run_topGO_contrast(
+  "myresults/OAvsAM_results.csv",
+  "myresults/GO_OAvsAM_BP.csv"
+)
 
+GO_OW <- run_topGO_contrast(
+  "myresults/OWvsAM_results.csv",
+  "myresults/GO_OWvsAM_BP.csv"
+)
 
-####################################################
-
-### Check on the DE results from the DESeq 
-
-####################################################
-
-resultsNames(dds_F0)
-# [1] "Intercept"           "treatment_OA_vs_AM"  "treatment_OW_vs_AM"  "treatment_OWA_vs_AM"
-
-res_OWAvsAM <- results(dds_F0, name="treatment_OWA_vs_AM", alpha=0.05)
-res_OWAvsAM <- res_OWAvsAM[order(res_OWAvsAM$padj),] # sort by significance
-head(res_OWAvsAM)  
-summary(res_OWAvsAM)
-# interpreted from summary:
-# 9.3% (or 2343) of 25260 genes running were UPREGULATED (responding to new environment)
-# baseMean shows average counts per transcript
-# log2FoldChange (LFC) shows pos or neg value, showing up/down-regulation
-# lfcSE = LFC standard error
-# stat = significance (the sign of it doesn't matter; just indicates LFC)
-# p value = significance
-# padj = adjusted p value using correction factor (slightly less sig)
+GO_OWA <- run_topGO_contrast(
+  "myresults/OWAvsAM_results.csv",
+  "myresults/GO_OWAvsAM_BP.csv"
+)
