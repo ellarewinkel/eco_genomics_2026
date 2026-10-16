@@ -108,16 +108,16 @@ res_OWAvsAMF4 <- res_OWAvsAMF4[order(res_OWAvsAMF4$padj),]
 head(res_OWAvsAMF4)
 summary(res_OWAvsAMF4)
 
-#? until before F11
+#? until before F11. Trying to set up for GO. Error in evaluating argument 'x'...
 res_OWAvsAMF4.df <- as.data.frame(res_OWAvsAM)
 res_OWAvsAM.df$fullID <- rownames(res_OWAvsAM.df)
 
 parts <- strsplit(res_OWAvsAM.df$fullID, "::")
 
 res_OWAvsAMF4.df$shortID <- sapply()
-  parts,
+  parts
   function(x) paste(x[1:2], collapse="::")
-)
+
 
 write.csv(
   res_OWAvsAMF4.df,
@@ -145,7 +145,10 @@ res_OWAvsAMF11 <- res_OWAvsAMF11[order(res_OWAvsAMF11$padj),]
 head(res_OWAvsAMF11)
 summary(res_OWAvsAMF11)
 
-### GO Analysis on OWA vs AM Overall (not by generation)
+### Euler
+
+
+### GO Analysis on OWA vs AM Overall (not by generation). Not working yet
 library(topGO)
 
 run_topGO_contrast <- function(
