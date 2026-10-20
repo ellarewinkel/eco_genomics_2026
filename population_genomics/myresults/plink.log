@@ -1,0 +1,15 @@
+PLINK v1.9.0-b.7.7 64-bit (22 Oct 2024)
+Options in effect:
+  --allow-extra-chr
+  --double-id
+  --set-missing-var
+  --vcf /users/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults/Lottia_gigantea_pl_flt3.renamed.vcf.gz
+
+Hostname: node329.cluster
+Working directory: /gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults
+Start time: Tue Oct 20 17:34:33 2026
+
+Error: Unrecognized flag ('--set-missing-var').
+For more information, try "plink --help <flag name>" or "plink --help | more".
+
+End time: Tue Oct 20 17:34:33 2026

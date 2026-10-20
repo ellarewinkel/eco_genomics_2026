@@ -1,0 +1,6 @@
+Error: Failed to open
+/users/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults/Lottia_gigantea_pl_flt3.renamed.vcf.gz.
+(--vcf expects a complete filename; did you forget '.vcf' at the end?)
+Error: Unrecognized flag ('--set-missing-var').
+For more information, try "plink --help <flag name>" or "plink --help | more".
+/var/spool/slurm/d/job5963758/slurm_script: line 36: --extract: command not found

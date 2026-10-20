@@ -1,0 +1,29 @@
+/gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults
+Lottia_gigantea_pl_flt3.renamed.vcf.gz
+PLINK v1.9.0-b.7.7 64-bit (22 Oct 2024)            cog-genomics.org/plink/1.9/
+(C) 2005-2024 Shaun Purcell, Christopher Chang   GNU General Public License v3
+Logging to /gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults/Lg_LD_0.2_alldata.log.
+Options in effect:
+  --allow-extra-chr
+  --double-id
+  --indep-pairwise 50 10 0.2
+  --out /gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults/Lg_LD_0.2_alldata
+  --set-missing-var-ids @:#
+  --vcf /gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults/Lottia_gigantea_pl_flt3.renamed.vcf.gz
+
+1547281 MB RAM detected; reserving 773640 MB for main workspace.
+PLINK v1.9.0-b.7.7 64-bit (22 Oct 2024)            cog-genomics.org/plink/1.9/
+(C) 2005-2024 Shaun Purcell, Christopher Chang   GNU General Public License v3
+Logging to /gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults/Lg_LD_0.2_alldata.log.
+Options in effect:
+  --allow-extra-chr
+  --double-id
+  --extract /gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults/Lg_LD_0.2_alldata.prune.in
+  --make-bed
+  --out /gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults/Lg_LD_0.2_alldata
+  --pca
+  --set-missing-var-ids @:#
+  --vcf /gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults/Lottia_gigantea_pl_flt3.renamed.vcf.gz
+
+1547281 MB RAM detected; reserving 773640 MB for main workspace.
+my script is done!
