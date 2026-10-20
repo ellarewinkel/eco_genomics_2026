@@ -72,8 +72,8 @@ res_OWAvsAMF0 <- results(dds_AM_OWA_F0, name="treatment_OWA_vs_AM", alpha=0.05)
 res_OWAvsAMF0 <- res_OWAvsAMF0[order(res_OWAvsAMF0$padj),] # sort by significance
 head(res_OWAvsAMF0)  
 summary(res_OWAvsAMF0)
-# notes: interpreted from summary of OWA vs AM (NOT subsetted by generation. must update this):
-# 9.3% (or 2343) of 25260 genes running were UPREGULATED (responding to new environment)
+# notes: interpreted from summary of OWA vs AM
+# 9.4% (or 2364) of 25260 genes running were UPREGULATED (responding to new environment)
 # baseMean shows average counts per transcript
 # log2FoldChange (LFC) shows pos or neg value, showing up/down-regulation
 # lfcSE = LFC standard error
@@ -86,6 +86,7 @@ write.csv(
   "myresults/OWAvsAMF0_results.csv",
   row.names = FALSE
 )
+#ERROR!!!!!!!!!!: object res_OWAvsAMF0.df not found (there is one without the .df but not with)
 
 #######
 # F4 #
@@ -107,6 +108,7 @@ res_OWAvsAMF4 <- results(dds_AM_OWA_F4, name="treatment_OWA_vs_AM", alpha=0.05)
 res_OWAvsAMF4 <- res_OWAvsAMF4[order(res_OWAvsAMF4$padj),]
 head(res_OWAvsAMF4)
 summary(res_OWAvsAMF4)
+# 58 upregulated.  0.23%
 
 #? until before F11. Trying to set up for GO. Error in evaluating argument 'x'...
 res_OWAvsAMF4.df <- as.data.frame(res_OWAvsAM)
@@ -117,13 +119,14 @@ parts <- strsplit(res_OWAvsAM.df$fullID, "::")
 res_OWAvsAMF4.df$shortID <- sapply()
   parts
   function(x) paste(x[1:2], collapse="::")
-
+# ERROR!!!!!!!!!!!!!!!!! in h(simpleError(msg, call))
 
 write.csv(
   res_OWAvsAMF4.df,
   "myresults/OWAvsAMF4_results.csv",
   row.names = FALSE
 )
+# this worked but didn't generate plot
 
 #######
 # F11 #

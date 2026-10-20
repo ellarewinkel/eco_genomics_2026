@@ -70,7 +70,7 @@ res_OWAvsAM <- res_OWAvsAM[order(res_OWAvsAM$padj),] # sort by significance
 head(res_OWAvsAM)  
 summary(res_OWAvsAM)
 # interpreted from summary:
-# 9.3% (or 2343) of 25260 genes running were UPREGULATED (responding to new environment)
+# LFC >0 (up): 9.3% (or 2343) of 25260 genes running were UPREGULATED (responding to new environment)
 # baseMean shows average counts per transcript
 # log2FoldChange (LFC) shows pos or neg value, showing up/down-regulation
 # lfcSE = LFC standard error
