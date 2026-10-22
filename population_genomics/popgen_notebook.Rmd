@@ -141,6 +141,7 @@ echo "my script is done!"
 # 10.22.26 Genetic Diversity
 
 **Overview**
+We copied pi files over and created ggplots to represent genetic diversity.
 
 **Notes**
 
