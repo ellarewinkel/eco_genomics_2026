@@ -140,8 +140,8 @@ echo "my script is done!"
 
 # 10.22.26 Genetic Diversity
 
-**Overview**
-We copied pi files over and created ggplots to represent genetic diversity.
+**Overview** We copied pi files over and created ggplots to represent
+genetic diversity.
 
 **Notes**
 
@@ -212,3 +212,78 @@ tail -n +2 sample_metadata.csv \| cut -d ',' -f 1,2 \| tr ',' '\\t' \>
 popmap.txt
 
 head popmap.txt
+
+# 10.27.2026 Genetic Diversity cont'd
+
+**Overview**
+
+Today, we generated plots to analyze genetic diversity. We also
+calculated genome-wide and windowed pairwise F_ST using vcftools and
+plotted an F_ST genome scan in R.
+
+**Working Directory:**
+
+/gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/mydata
+
+**Heterozygosity**
+
+-   Observed heterozygosity (HO) is the proportion of sites at which an
+    individual is heterozygous.
+
+-   Expected heterozygosity (HE) is the proportion we would expect if
+    the population mated at random (Hardy–Weinberg equilibrium): 2pq at
+    each site, where p and q are the allele frequencies.
+
+-   The inbreeding coefficient compares the two: F = 1 − HO / HE. F = 0
+    means an individual is as heterozygous as expected, F \> 0 means
+    less heterozygous, and F \< 0 means more.
+
+-   Possible causes for positive F (too few heterozygotes): Inbreeding
+    (mating between relatives); genotyping errors, especially at low
+    coverage, where heterozygotes are miscalled as homozygotes
+
+-   Possible causes for negative F (too many heterozygotes): LESS inbred
+    (mating between divergent populations); mapping errors; where reads
+    from duplicated regions (paralogs) pile up on one locus and look
+    like heterozygotes in everyone
+
+**Plots**
+
+![Pi latitude plot.](images/clipboard-3692039635.png)
+
+\^ This is not saved in R.
+
+![Tajima's D plot](images/clipboard-418031780.png)
+
+![Scan plot for pi. Tajima's D is calculated by VCF (read in files,
+windows filtered out with less than 5 SNPs, and pop data readded).
+Positive selection (new beneficial allele appears and shifts
+distribution/frequency over, sweeping across the population) is
+signified by negative Tajima's D (there is an excess of rare alleles
+sweeping through population and shifting distribution).
+Negative/stabilizing selection is signified by positive Tajima's D: bell
+curve gets narrower as alleles/traits are
+purged.](images/clipboard-3599083371.png)
+
+![Scan plot for diversity along the
+genome](images/clipboard-3729165519.png)
+
+![HO Plot](images/clipboard-4176761003.png)
+
+![HO Plot \<- ggplot](images/clipboard-2470109854.png)
+
+![F Plot (HO/ggplot for F Coefficient). Shows inbreeding coefficient by
+taking in expected and observed heterozygosity (looking at divergence
+from Hardy-Weinberg).](images/clipboard-1494559101.png)
+
+![Heatmap for signatures of selection. Genome-wide pairwise FST
+(populations ordered south to north). ASU and TOR populations are
+important because they are the southern populations and outliers. There
+is a gradient of the FST going up into the core of the population (near
+the middle and up).](images/clipboard-17150253.png)
+
+![Weighted FST vs Difference in latitude by degrees. Differentiation
+increases with the geographic distance between populations, so there is
+isolation by distance (seen as the data being close to the linear
+model). The greater the distance, the greater the FST.
+](images/clipboard-3820148960.png)
