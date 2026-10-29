@@ -213,7 +213,9 @@ popmap.txt
 
 head popmap.txt
 
-# 10.27.2026 Genetic Diversity cont'd
+</div>
+
+# 10.27.2026 Genetic Diversity cont'd; F_ST Genome Scans
 
 **Overview**
 
@@ -285,5 +287,57 @@ the middle and up).](images/clipboard-17150253.png)
 ![Weighted FST vs Difference in latitude by degrees. Differentiation
 increases with the geographic distance between populations, so there is
 isolation by distance (seen as the data being close to the linear
-model). The greater the distance, the greater the FST.
-](images/clipboard-3820148960.png)
+model). The greater the distance, the greater the
+FST.](images/clipboard-3820148960.png)
+
+</div>
+
+# 10.29.2026 Signatures of Selection: BayPass
+
+**Overview**
+
+Today, we coded in R, starting from the output of the BayPass model. We
+will look at a GEA and learn how it is produced, despite not producing
+it ourselves here.
+
+**Notes**
+
+-   Bayesian statistics: give it prior information, and it builds up
+    models based on the more information you give
+
+-   Advantages of BayPass
+
+    -   We can plug in covariant models (environmental, biotic, contrast
+        [ex: North vs South] to look at what is potentially driving this
+        selection
+
+-   XtX: looking for outliers without considering variables
+
+-   Bayes: looking for outliers but applying to variables
+
+**Plots**
+
+![![Heatmap for the major matrix. There are potentially 3
+populations.](images/clipboard-1294123390.png)](images/clipboard-1470287533.png){width="504"}
+
+Heatmap for the major matrix. There are potentially 3 major populations,
+as shown with the red squares.
+
+![Surprisingly few values around 0.](images/clipboard-3203682723.png)
+
+![](images/clipboard-4159833205.png)
+
+![Bayes factor. There are outliers spread across, but a few regions that
+are clearly marked at high Bayes factors. This means that this variable
+affects the genome. thetao_mean refers to sea surface temperature. There
+is a correlation between latitude and sea surface
+temperature.](images/clipboard-1430030574.png)
+
+![Top SST (sea surface temperature)-associated SNP. Sea surface
+temperature does not appear to have a clear effect on allele
+frequency.](images/clipboard-2925277586.png)
+
+![Top latitude-associated SNP. There is a latitudinal effect on allele
+frequency, possibly warranting further investigation. The southern
+populations, ASU and TOR, are fixed. The top SNP is outside of the
+matrix.](images/clipboard-3249672073.png)
