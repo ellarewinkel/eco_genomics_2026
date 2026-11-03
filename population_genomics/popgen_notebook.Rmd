@@ -398,3 +398,140 @@ TopGO](images/clipboard-2695783506.png)
 more outliers associated with latitude than surface temperature (tao),
 and most of the genes are from the intergenic region. "Missense"
 variants refer to nonsynonymous.](images/clipboard-3688560420.png)
+
+Discussion of meaning/storytelling:
+
+Population Structure
+
+-   PCA: Do individuals cluster by site or region?
+
+    -   Region clustering (sites in the same region are clustered
+        together)
+
+-   ADMIXTURE: How many genetic groups are there, and are individuals of
+    mixed ancestry?
+
+    -   3 groups (green, pea green, all red)
+
+    -   K=5 has too much noise & error
+
+    -   Southermost groups (2 pops for Bahia) are distinct from all 5
+        admixtures. This area has up-welling and is colder than a
+        population slightly more north. There may not be much dispersion
+        due to geography
+
+-   Genetic diversity and signatures of selection:
+
+    -   pi and heterozygosity: Which populations are more or less
+        diverse?
+
+        -   Pi vs latitude corrected data scatterplot: shows that as
+            latitude increases, there's a linear trend with now the
+            nucleotide diversity decreases
+
+        -   Northern populations are less diverse than southern
+            populations
+
+        -   Pi along scaffold facet graph: shows diversity in each
+            population
+
+            -   Shows that heterozygosity is a good marker for finding
+                other factors to look into within specific environment
+                that causes clustering of same nucleotides in specific
+                populations (look at gene ontology)
+
+    -   Tajima's D: Are there regions of positive +/ balancing
+        selection?
+
+        -   Tajima's D violin plot. Negative values indicate positive
+            selection; positive values indicate balancing selection
+
+            -   Shows averages of Tajima's D for each specific
+                population
+
+            -   No strong association, but some outliers (like in ASU
+                site) show more influence of positive selection due to
+                greater average shift toward negative values
+
+                -   It may be useful to create a pi along scaffold graph
+                    for Tajima's D to get a better idea rather than
+                    general pattern
+
+    -   F_ST: How different are the populations and which ones stand
+        out?
+
+        -   Pairwise FST heatmap
+
+            -   FST values are extremely low when they're all compared
+                to their species
+
+            -   Reddest boxes = southernmost populations, essentially
+                equal to each other when compared to each other (0).
+                When compared to rest of groups, there is greater
+                variation.
+
+            -   FST = larger values is more difference; smaller values
+                is less difference
+
+        -   FST_vs_Distance
+
+    -   Baypass XtX\*: Which SNPs are more differentiated than the
+        populations demography alone predicts?
+
+        -   XtX uses matrix of values accounting for similarity, using
+            as coefficients to scale heterozygosity so it isn't strictly
+            a parewise phenomenon. Based on genetic flow between
+            populations
+
+        -   Identified 1822 SNPs (which are significantly
+            differentiated)
+
+        -   BayPass Omega Tree: Shows populations clustered. Looking at
+            SNPs found through this, we can look at trends with
+            environmental association
+
+-   Genotype x Environmental Associations:
+
+    -   Baypass Covariate Model (*BF*): Which SNPs are associated with
+        latitudinal or temperature differences?
+
+        -   Baypass BF scan full: red color indicates decisiveness
+
+        -   Can see specific significant SNPs in very clear dotted lines
+
+        -   Big difference between SNPs for lat compared to surface
+            temperature (more significant SNPs associated with latitude)
+
+        -   Looking at specific SNPs, top LAT and Top SST-associated SNP
+            plots
+
+            -   Found no clear pattern for surface temp
+
+            -   Found clear association between latitude and top SNP,
+                which is consistent since latitude makes a difference
+                (sanity check to ensure results are correct)
+
+            -   Finding regions significant in both of the plots
+
+-   Genes of Interest:
+
+    -   Gene types (SnpEFF): Where are the outlier SNPs relative to
+        genes, and what is their potential function?
+
+        -   Annocount graph: Shows total amount of SNPs for each
+            category and the affect they have on the genome
+
+        -   Not many missense OR synonymous variants
+
+            -   Implies that changes made are more regulatory (functions
+                of SNPs are to regulate the genes)
+
+        -   More outlier SNPs found in latitude group than surface temp
+            (tao) group
+
+    -   Gene Ontology: Are the candidate genes enriched for particular
+        functions?
+
+        -   Check GO website to see gene functions and see if it makes
+            sense for latitude and surface temperature (apply
+            biologically)
