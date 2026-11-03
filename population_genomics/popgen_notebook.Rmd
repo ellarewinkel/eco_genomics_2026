@@ -341,3 +341,55 @@ frequency.](images/clipboard-2925277586.png)
 frequency, possibly warranting further investigation. The southern
 populations, ASU and TOR, are fixed. The top SNP is outside of the
 matrix.](images/clipboard-3249672073.png)
+
+</div>
+
+# 11.03.2026 Genes and Gene Ontology
+
+**Overall**
+
+Today, we coded for a GO Enrichment Test to see which candidate genes
+are in the top term and which are enriched. We identified environmental
+outliers, their types of change, and the most strongly associated SNPs
+through SnpEFF.
+
+**Notes**
+
+-   Gene Ontology (GO) is a shared vocabulary of terms describing gene
+    functions
+
+    -   Biological Process (BP): the larger bio program a gene
+        contributes to
+
+    -   Molecular Function (MF): function of gene product at molecular
+        level
+
+    -   Cellular Component (CC): gene product location in cell
+
+-   GO Enrichment Test shows whether candidate genes (annotated with a
+    particular GO term) are represented more often than expected by
+    chance, given all genes we could have found
+
+    -   "Annotated" genes: genes in the universe with the GO term
+
+    -   "Significant" genes: candidate genes with the term
+
+    -   "Expected": expected number of candidates in the term by chance
+
+-   Factors that could bias a GO Enrichment test:
+
+    -   Universe
+
+    -   Gene length
+
+    -   Neighboring genes
+
+    -   Many tests
+
+**Plots**
+
+![Lollipop plot showing gene ontology enrichment with
+TopGO](images/clipboard-2695783506.png)
+
+![Showing the outlier SNPs (Part B: SnpEFF and gene
+types)](images/clipboard-3688560420.png)
