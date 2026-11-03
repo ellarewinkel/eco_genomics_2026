@@ -386,10 +386,15 @@ through SnpEFF.
 
     -   Many tests
 
+-   We can check what our genes correspond to on NCBI Gene
+    (<https://www.ncbi.nlm.nih.gov/gene/>) by searching for the gene ID
+
 **Plots**
 
 ![Lollipop plot showing gene ontology enrichment with
 TopGO](images/clipboard-2695783506.png)
 
-![Showing the outlier SNPs (Part B: SnpEFF and gene
-types)](images/clipboard-3688560420.png)
+![Showing the outlier SNPs (Part B: SnpEFF and gene types). There are
+more outliers associated with latitude than surface temperature (tao),
+and most of the genes are from the intergenic region. "Missense"
+variants refer to nonsynonymous.](images/clipboard-3688560420.png)
