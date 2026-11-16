@@ -1,8 +1,39 @@
+# open vacc. nano?
+# module load plink
+# set $DATA_DIR and VCF
+# prune for less strict (0.2 -> 0.5) LD threshold
+# run PCA with new LD threshold
+
+# head -n 3:
+# ASU01 ASU01 -0.0253265 -0.100784 -0.0462359 0.0543123
+# ASU02 ASU02 -0.0200904 -0.102493 -0.0747375 0.0205694
+# ASU03 ASU03 -0.0539653 -0.10024 -0.065859 -0.0278861
+
+# cat Lg_LD_0.5.eigenval
+# 6.52459
+# 3.80923
+# 1.92898
+# 1.62068
+# 1.43148
+# 1.38745
+# 1.34882
+# 1.32945
+# 1.31227
+# 1.28381
+# 1.25412
+# 1.22957
+# 1.21032
+# 1.19421
+# 1.17783
+# 1.17408
+# 1.16319
+# 1.15677
+# 1.14634
+# 1.1327
+
 library(tidyverse)
 setwd("~/projects/eco_genomics_2026/population_genomics/mydata")
 OUTDIR="/gpfs1/home/e/r/erewinke/projects/eco_genomics_2026/population_genomics/myresults"
-
-# go to Pop Structure tut to apply it to vacc plink to make 0.5 LG file
 
 # Reading in PCA results from plink:
 # the .eigenvec file has no column names, so col_names = FALSE (they become X1, X2, ...)
@@ -41,7 +72,7 @@ ggsave(pve_plot, file=paste0(OUTDIR, "/variance_0.5.png"), width = 6, height = 4
 meta <- read_csv("sample_metadata.csv")
 pca <- left_join(pca, meta, by = "ID")
 
-# check every individual matched a row in the metadata: this should print 0
+# check every individual matched a row in the metadata: this should print 0 (and did)
 sum(is.na(pca$Site))
 
 # order the sites from north to south, so the legend follows the coast
@@ -74,6 +105,7 @@ lat_plot <- pca %>%
   labs(x = "Latitude (°N)", y = "PC score", colour = "Site (north to south)") +
   theme_bw()+
   coord_flip()
+lat_plot
 
 ggsave(lat_plot, file = paste0(OUTDIR, "/Lg_0.5_pca_latitude.png"), width = 8, height = 6)
 
@@ -96,6 +128,7 @@ map_plot <- ggplot() +
                  ylim = range(sites$Latitude) + c(-2, 2)) +
   labs(x = "Longitude", y = "Latitude", colour = "Site (north to south)") +
   theme_bw()
+map_plot
 
 # with patchwork, + puts plots side by side
 # we hide the map's legend since PCA's legend already shows the sites
@@ -111,6 +144,11 @@ ggsave(map_pca, file = paste0(OUTDIR, "/Lg_0.5_pca_map.png"), width = 8, height 
 # For running admixture, K is defined for the min/max populations estimated to run (it looks like a max of 5 populations)
 # when doing this and creating bash script, it says cd ~/popgen/class 2 in the code.
 # however, you want to add your full working directory instead (to _)
+
+# run bash script? wasn't working. won't generate Q values
+cp Lg_LD_0.5.bim Lg_LD_0.5.bim.orig
+awk 'BEGIN{OFS="\t"} {$1="0"; print}' Lg_LD_0.5.bim.orig > Lg_LD_0.5.bim
+#...? preparing the input
 
 cv <- read_tsv("cv_errors.tsv", col_names = c("K", "CV_error"))
 
@@ -145,6 +183,7 @@ q_all <- map_dfr(1:5, read_q) %>%
   # order sites north to south, as in the PCA plots
   mutate(Site = fct_reorder(Site, -Latitude),
          K = paste0("K = ", K))
+########## ERROR HERE IN map() because Lg_LD_0.5.1.Q does not exist. do i need to run
 
 # check every individual matched the metadata: this should print 0
 sum(is.na(q_all$Site))
