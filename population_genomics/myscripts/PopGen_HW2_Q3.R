@@ -145,10 +145,45 @@ ggsave(map_pca, file = paste0(OUTDIR, "/Lg_0.5_pca_map.png"), width = 8, height 
 # when doing this and creating bash script, it says cd ~/popgen/class 2 in the code.
 # however, you want to add your full working directory instead (to _)
 
-# run bash script? wasn't working. won't generate Q values
-cp Lg_LD_0.5.bim Lg_LD_0.5.bim.orig
-awk 'BEGIN{OFS="\t"} {$1="0"; print}' Lg_LD_0.5.bim.orig > Lg_LD_0.5.bim
-#...? preparing the input
+# run bash script? wasn't working
+#(nano)
+#(sbatch admixture_hw2)
+
+#!/bin/bash
+#SBATCH --job-name=admixture_hw2
+#SBATCH --partition=general
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=32G
+#SBATCH --time=24:00:00
+#SBATCH --output=./logs/%x.%j.out
+#SBATCH --error=./logs/%x.%j.err
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=erewinke@uvm.edu
+
+cd /gpfs1/home/e/r/erewinke/eco_genomics_2026/population_genomics/mydata
+
+OUTDIR=/gpfs1/home/e/r/erewinke/eco_genomics_2026/population_genomics/myresults
+
+echo "This is my out directory"
+echo $OUTDIR
+
+module load admixture
+
+INPUT="Lg_LD_0.5.bed"
+K_MIN=1
+K_MAX=10
+THREADS=1
+
+rm -f cv_errors.tsv
+
+for K in $(seq ${K_MIN} ${K_MAX}); do
+admixture --cv -j${THREADS} "${INPUT}" ${K} | tee "admixture_K${K}.out"
+CV=$(grep "CV error" "admixture_K${K}.out" | awk '{print $NF}')
+echo -e "${K}\t${CV}" >> cv_errors.tsv
+done
+
+#######################
 
 cv <- read_tsv("cv_errors.tsv", col_names = c("K", "CV_error"))
 
