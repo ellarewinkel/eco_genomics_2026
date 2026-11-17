@@ -524,5 +524,46 @@ Population Structure
   # 11.17.2026 - PopGen HW #2 and Group Projects
 
   Today, I continued running my admixture from yesterday. To check what
-  was running in terminal, I entered "squeue -u \$USER". In class, we
-  worked on group projects.
+  was running in terminal, I entered "squeue -u \$USER".
+
+  ### Group Project Notes
+
+  Copy 16S data into final_project folder (using terminal):
+
+  ```{bash}
+  cp -r /gpfs1/cl/biol3990/PopulationGenomics/16S /users/e/r/erewinke/projects/eco_genomics_2026/final_project/mydata
+  ```
+
+  (\^ Box created by saying "/bash")
+
+  Then, sort files into final_project folder for greater efficiency.
+
+  Created new script in myscripts titled "PCA_zebrafish.R," then changed
+  directory:
+
+  ```{bash}
+  cd ~/projects/eco_genomics_2026/final_project/mydata
+  ```
+
+Data info:
+
+```{# Number of samples: 435}
+# Number of features: 36728
+# Minimum reads/sample: 33
+# Median reads/sample: 39395
+# Maximum reads/sample: 76697
+```
+
+Print sample retention (decided depth to be 10000 and we'll lose 26
+samples):
+
+```{depth samples_retained samples_total proportion_retained percent_retained samples_lost}
+1  1000         432           435          0.99310345        99.310345            3
+2  2500         431           435          0.99080460        99.080460            4
+3  5000         429           435          0.98620690        98.620690            6
+4 10000         409           435          0.94022989        94.022989           26
+5 15000         385           435          0.88505747        88.505747           50
+6 20000         353           435          0.81149425        81.149425           82
+7 30000         284           435          0.65287356        65.287356          151
+8 60000          25           435          0.05747126         5.747126          410
+```
