@@ -145,30 +145,29 @@ genetic diversity.
 
 **Notes**
 
--   For genetic diversity, we can look:
+- For genetic diversity, we can look:
 
-    -   within individual
+  - within individual
 
-    -   within population
+  - within population
 
-    -   within species
+  - within species
 
--   Metrics of genetic diversity
+- Metrics of genetic diversity
 
-    -   Heterozygosity
+  - Heterozygosity
 
-    -   Private allele -\> allele richness
+  - Private allele -\> allele richness
 
-    -   F_ST -\> fixation index (metric for looking at pop
-        differentiation)
+  - F_ST -\> fixation index (metric for looking at pop differentiation)
 
-    -   Ne -\> Genetic (pop size); Nc -\> Consensus (pop size)
+  - Ne -\> Genetic (pop size); Nc -\> Consensus (pop size)
 
-    -   Nucleotide diversity (depicted as pi)
+  - Nucleotide diversity (depicted as pi)
 
-    -   Inbreeding coefficient -\> F_is
+  - Inbreeding coefficient -\> F_is
 
-    -   \% polymorphism
+  - \% polymorphism
 
 **Module Version Used**
 
@@ -229,25 +228,25 @@ plotted an F_ST genome scan in R.
 
 **Heterozygosity**
 
--   Observed heterozygosity (HO) is the proportion of sites at which an
-    individual is heterozygous.
+- Observed heterozygosity (HO) is the proportion of sites at which an
+  individual is heterozygous.
 
--   Expected heterozygosity (HE) is the proportion we would expect if
-    the population mated at random (Hardy–Weinberg equilibrium): 2pq at
-    each site, where p and q are the allele frequencies.
+- Expected heterozygosity (HE) is the proportion we would expect if the
+  population mated at random (Hardy–Weinberg equilibrium): 2pq at each
+  site, where p and q are the allele frequencies.
 
--   The inbreeding coefficient compares the two: F = 1 − HO / HE. F = 0
-    means an individual is as heterozygous as expected, F \> 0 means
-    less heterozygous, and F \< 0 means more.
+- The inbreeding coefficient compares the two: F = 1 − HO / HE. F = 0
+  means an individual is as heterozygous as expected, F \> 0 means less
+  heterozygous, and F \< 0 means more.
 
--   Possible causes for positive F (too few heterozygotes): Inbreeding
-    (mating between relatives); genotyping errors, especially at low
-    coverage, where heterozygotes are miscalled as homozygotes
+- Possible causes for positive F (too few heterozygotes): Inbreeding
+  (mating between relatives); genotyping errors, especially at low
+  coverage, where heterozygotes are miscalled as homozygotes
 
--   Possible causes for negative F (too many heterozygotes): LESS inbred
-    (mating between divergent populations); mapping errors; where reads
-    from duplicated regions (paralogs) pile up on one locus and look
-    like heterozygotes in everyone
+- Possible causes for negative F (too many heterozygotes): LESS inbred
+  (mating between divergent populations); mapping errors; where reads
+  from duplicated regions (paralogs) pile up on one locus and look like
+  heterozygotes in everyone
 
 **Plots**
 
@@ -302,18 +301,18 @@ it ourselves here.
 
 **Notes**
 
--   Bayesian statistics: give it prior information, and it builds up
-    models based on the more information you give
+- Bayesian statistics: give it prior information, and it builds up
+  models based on the more information you give
 
--   Advantages of BayPass
+- Advantages of BayPass
 
-    -   We can plug in covariant models (environmental, biotic, contrast
-        [ex: North vs South] to look at what is potentially driving this
-        selection
+  - We can plug in covariant models (environmental, biotic, contrast
+    [ex: North vs South] to look at what is potentially driving this
+    selection
 
--   XtX: looking for outliers without considering variables
+- XtX: looking for outliers without considering variables
 
--   Bayes: looking for outliers but applying to variables
+- Bayes: looking for outliers but applying to variables
 
 **Plots**
 
@@ -355,39 +354,38 @@ through SnpEFF.
 
 **Notes**
 
--   Gene Ontology (GO) is a shared vocabulary of terms describing gene
-    functions
+- Gene Ontology (GO) is a shared vocabulary of terms describing gene
+  functions
 
-    -   Biological Process (BP): the larger bio program a gene
-        contributes to
+  - Biological Process (BP): the larger bio program a gene contributes
+    to
 
-    -   Molecular Function (MF): function of gene product at molecular
-        level
+  - Molecular Function (MF): function of gene product at molecular level
 
-    -   Cellular Component (CC): gene product location in cell
+  - Cellular Component (CC): gene product location in cell
 
--   GO Enrichment Test shows whether candidate genes (annotated with a
-    particular GO term) are represented more often than expected by
-    chance, given all genes we could have found
+- GO Enrichment Test shows whether candidate genes (annotated with a
+  particular GO term) are represented more often than expected by
+  chance, given all genes we could have found
 
-    -   "Annotated" genes: genes in the universe with the GO term
+  - "Annotated" genes: genes in the universe with the GO term
 
-    -   "Significant" genes: candidate genes with the term
+  - "Significant" genes: candidate genes with the term
 
-    -   "Expected": expected number of candidates in the term by chance
+  - "Expected": expected number of candidates in the term by chance
 
--   Factors that could bias a GO Enrichment test:
+- Factors that could bias a GO Enrichment test:
 
-    -   Universe
+  - Universe
 
-    -   Gene length
+  - Gene length
 
-    -   Neighboring genes
+  - Neighboring genes
 
-    -   Many tests
+  - Many tests
 
--   We can check what our genes correspond to on NCBI Gene
-    (<https://www.ncbi.nlm.nih.gov/gene/>) by searching for the gene ID
+- We can check what our genes correspond to on NCBI Gene
+  (<https://www.ncbi.nlm.nih.gov/gene/>) by searching for the gene ID
 
 **Plots**
 
@@ -403,135 +401,128 @@ Discussion of meaning/storytelling:
 
 Population Structure
 
--   PCA: Do individuals cluster by site or region?
+- PCA: Do individuals cluster by site or region?
 
-    -   Region clustering (sites in the same region are clustered
-        together)
+  - Region clustering (sites in the same region are clustered together)
 
--   ADMIXTURE: How many genetic groups are there, and are individuals of
-    mixed ancestry?
+- ADMIXTURE: How many genetic groups are there, and are individuals of
+  mixed ancestry?
 
-    -   3 groups (green, pea green, all red)
+  - 3 groups (green, pea green, all red)
 
-    -   K=5 has too much noise & error
+  - K=5 has too much noise & error
 
-    -   Southermost groups (2 pops for Bahia) are distinct from all 5
-        admixtures. This area has up-welling and is colder than a
-        population slightly more north. There may not be much dispersion
-        due to geography
+  - Southermost groups (2 pops for Bahia) are distinct from all 5
+    admixtures. This area has up-welling and is colder than a population
+    slightly more north. There may not be much dispersion due to
+    geography
 
--   Genetic diversity and signatures of selection:
+- Genetic diversity and signatures of selection:
 
-    -   pi and heterozygosity: Which populations are more or less
-        diverse?
+  - pi and heterozygosity: Which populations are more or less diverse?
 
-        -   Pi vs latitude corrected data scatterplot: shows that as
-            latitude increases, there's a linear trend with now the
-            nucleotide diversity decreases
+    - Pi vs latitude corrected data scatterplot: shows that as latitude
+      increases, there's a linear trend with now the nucleotide
+      diversity decreases
 
-        -   Northern populations are less diverse than southern
-            populations
+    - Northern populations are less diverse than southern populations
 
-        -   Pi along scaffold facet graph: shows diversity in each
-            population
+    - Pi along scaffold facet graph: shows diversity in each population
 
-            -   Shows that heterozygosity is a good marker for finding
-                other factors to look into within specific environment
-                that causes clustering of same nucleotides in specific
-                populations (look at gene ontology)
+      - Shows that heterozygosity is a good marker for finding other
+        factors to look into within specific environment that causes
+        clustering of same nucleotides in specific populations (look at
+        gene ontology)
 
-    -   Tajima's D: Are there regions of positive +/ balancing
-        selection?
+  - Tajima's D: Are there regions of positive +/ balancing selection?
 
-        -   Tajima's D violin plot. Negative values indicate positive
-            selection; positive values indicate balancing selection
+    - Tajima's D violin plot. Negative values indicate positive
+      selection; positive values indicate balancing selection
 
-            -   Shows averages of Tajima's D for each specific
-                population
+      - Shows averages of Tajima's D for each specific population
 
-            -   No strong association, but some outliers (like in ASU
-                site) show more influence of positive selection due to
-                greater average shift toward negative values
+      - No strong association, but some outliers (like in ASU site) show
+        more influence of positive selection due to greater average
+        shift toward negative values
 
-                -   It may be useful to create a pi along scaffold graph
-                    for Tajima's D to get a better idea rather than
-                    general pattern
+        - It may be useful to create a pi along scaffold graph for
+          Tajima's D to get a better idea rather than general pattern
 
-    -   F_ST: How different are the populations and which ones stand
-        out?
+  - F_ST: How different are the populations and which ones stand out?
 
-        -   Pairwise FST heatmap
+    - Pairwise FST heatmap
 
-            -   FST values are extremely low when they're all compared
-                to their species
+      - FST values are extremely low when they're all compared to their
+        species
 
-            -   Reddest boxes = southernmost populations, essentially
-                equal to each other when compared to each other (0).
-                When compared to rest of groups, there is greater
-                variation.
+      - Reddest boxes = southernmost populations, essentially equal to
+        each other when compared to each other (0). When compared to
+        rest of groups, there is greater variation.
 
-            -   FST = larger values is more difference; smaller values
-                is less difference
+      - FST = larger values is more difference; smaller values is less
+        difference
 
-        -   FST_vs_Distance
+    - FST_vs_Distance
 
-    -   Baypass XtX\*: Which SNPs are more differentiated than the
-        populations demography alone predicts?
+  - Baypass XtX\*: Which SNPs are more differentiated than the
+    populations demography alone predicts?
 
-        -   XtX uses matrix of values accounting for similarity, using
-            as coefficients to scale heterozygosity so it isn't strictly
-            a parewise phenomenon. Based on genetic flow between
-            populations
+    - XtX uses matrix of values accounting for similarity, using as
+      coefficients to scale heterozygosity so it isn't strictly a
+      parewise phenomenon. Based on genetic flow between populations
 
-        -   Identified 1822 SNPs (which are significantly
-            differentiated)
+    - Identified 1822 SNPs (which are significantly differentiated)
 
-        -   BayPass Omega Tree: Shows populations clustered. Looking at
-            SNPs found through this, we can look at trends with
-            environmental association
+    - BayPass Omega Tree: Shows populations clustered. Looking at SNPs
+      found through this, we can look at trends with environmental
+      association
 
--   Genotype x Environmental Associations:
+- Genotype x Environmental Associations:
 
-    -   Baypass Covariate Model (*BF*): Which SNPs are associated with
-        latitudinal or temperature differences?
+  - Baypass Covariate Model (*BF*): Which SNPs are associated with
+    latitudinal or temperature differences?
 
-        -   Baypass BF scan full: red color indicates decisiveness
+    - Baypass BF scan full: red color indicates decisiveness
 
-        -   Can see specific significant SNPs in very clear dotted lines
+    - Can see specific significant SNPs in very clear dotted lines
 
-        -   Big difference between SNPs for lat compared to surface
-            temperature (more significant SNPs associated with latitude)
+    - Big difference between SNPs for lat compared to surface
+      temperature (more significant SNPs associated with latitude)
 
-        -   Looking at specific SNPs, top LAT and Top SST-associated SNP
-            plots
+    - Looking at specific SNPs, top LAT and Top SST-associated SNP plots
 
-            -   Found no clear pattern for surface temp
+      - Found no clear pattern for surface temp
 
-            -   Found clear association between latitude and top SNP,
-                which is consistent since latitude makes a difference
-                (sanity check to ensure results are correct)
+      - Found clear association between latitude and top SNP, which is
+        consistent since latitude makes a difference (sanity check to
+        ensure results are correct)
 
-            -   Finding regions significant in both of the plots
+      - Finding regions significant in both of the plots
 
--   Genes of Interest:
+- Genes of Interest:
 
-    -   Gene types (SnpEFF): Where are the outlier SNPs relative to
-        genes, and what is their potential function?
+  - Gene types (SnpEFF): Where are the outlier SNPs relative to genes,
+    and what is their potential function?
 
-        -   Annocount graph: Shows total amount of SNPs for each
-            category and the affect they have on the genome
+    - Annocount graph: Shows total amount of SNPs for each category and
+      the affect they have on the genome
 
-        -   Not many missense OR synonymous variants
+    - Not many missense OR synonymous variants
 
-            -   Implies that changes made are more regulatory (functions
-                of SNPs are to regulate the genes)
+      - Implies that changes made are more regulatory (functions of SNPs
+        are to regulate the genes)
 
-        -   More outlier SNPs found in latitude group than surface temp
-            (tao) group
+    - More outlier SNPs found in latitude group than surface temp (tao)
+      group
 
-    -   Gene Ontology: Are the candidate genes enriched for particular
-        functions?
+  - Gene Ontology: Are the candidate genes enriched for particular
+    functions?
 
-        -   Check GO website to see gene functions and see if it makes
-            sense for latitude and surface temperature (apply
-            biologically)
+    - Check GO website to see gene functions and see if it makes sense
+      for latitude and surface temperature (apply biologically)
+
+  # 11.17.2026 - PopGen HW #2 and Group Projects
+
+  Today, I continued running my admixture from yesterday. To check what
+  was running in terminal, I entered "squeue -u \$USER". In class, we
+  worked on group projects.

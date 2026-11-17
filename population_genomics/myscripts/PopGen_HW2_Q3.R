@@ -145,46 +145,9 @@ ggsave(map_pca, file = paste0(OUTDIR, "/Lg_0.5_pca_map.png"), width = 8, height 
 # when doing this and creating bash script, it says cd ~/popgen/class 2 in the code.
 # however, you want to add your full working directory instead (to _)
 
-# run bash script? wasn't working
-#(nano)
-#(sbatch admixture_hw2)
-
-#!/bin/bash
-#SBATCH --job-name=admixture_hw2
-#SBATCH --partition=general
-#SBATCH --nodes=1
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=32G
-#SBATCH --time=24:00:00
-#SBATCH --output=./logs/%x.%j.out
-#SBATCH --error=./logs/%x.%j.err
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=erewinke@uvm.edu
-
-cd /gpfs1/home/e/r/erewinke/eco_genomics_2026/population_genomics/mydata
-
-OUTDIR=/gpfs1/home/e/r/erewinke/eco_genomics_2026/population_genomics/myresults
-
-echo "This is my out directory"
-echo $OUTDIR
-
-module load admixture
-
-INPUT="Lg_LD_0.5.bed"
-K_MIN=1
-K_MAX=10
-THREADS=1
-
-rm -f cv_errors.tsv
-
-for K in $(seq ${K_MIN} ${K_MAX}); do
-admixture --cv -j${THREADS} "${INPUT}" ${K} | tee "admixture_K${K}.out"
-CV=$(grep "CV error" "admixture_K${K}.out" | awk '{print $NF}')
-echo -e "${K}\t${CV}" >> cv_errors.tsv
-done
+# run bash script? admixture_hw2.sh. K1-9 (instead of 10) were only generated due to computational error.
 
 #######################
-
 cv <- read_tsv("cv_errors.tsv", col_names = c("K", "CV_error"))
 
 cv_plot <- ggplot(cv, aes(K, CV_error)) +
@@ -218,9 +181,8 @@ q_all <- map_dfr(1:5, read_q) %>%
   # order sites north to south, as in the PCA plots
   mutate(Site = fct_reorder(Site, -Latitude),
          K = paste0("K = ", K))
-########## ERROR HERE IN map() because Lg_LD_0.5.1.Q does not exist. do i need to run
 
-# check every individual matched the metadata: this should print 0
+# check every individual matched the metadata: this should print 0 and did
 sum(is.na(q_all$Site))
 
 admix_plot <- ggplot(q_all, aes(ID, Ancestry, fill = Cluster)) +
@@ -235,6 +197,7 @@ admix_plot <- ggplot(q_all, aes(ID, Ancestry, fill = Cluster)) +
         panel.spacing.y = unit(0.8, "lines"),      # gap between values of K
         strip.text.x    = element_text(angle = 90, hjust = 0),
         legend.position = "none")
+admix_plot
 
 ggsave(admix_plot, file = paste0(OUTDIR, "/admixture_K1-5_hw2.png"), width = 12, height = 7
 # Notes on new admixture:
