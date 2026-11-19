@@ -443,7 +443,7 @@ ggplot(
   ) +
   theme_classic(base_size = 18)
 
-# Rarification curve above: 0 samples at 60,000 depth. 90% of samples remain around 10,000 depth
+# Rarefaction curve above: 0 samples at 60,000 depth. 90% of samples remain around 10,000 depth
 
 # CONVERT OTU TABLE TO SAMPLE x FEATURE MATRIX
 otu <- as(otu_table(ps.skin), "matrix")
@@ -480,7 +480,7 @@ cat("Median reads:", median(sample_depths), "\n")
 cat("3rd quartile:", quantile(sample_depths, 0.75), "\n")
 cat("Maximum reads:", max(sample_depths), "\n")
 
-cat("\nLowest 26 samples:\n") # Lowest 26 based on rarefication score we picked (10,000)
+cat("\nLowest 26 samples:\n") # Lowest 26 based on rarefaction score we picked (10,000)
 print(sort(sample_depths)[1:min(20, length(sample_depths))])
 
 # CANDIDATE RAREFACTION DEPTHS
@@ -707,6 +707,16 @@ feature_retention <- lapply(
 ) %>%
   bind_rows()
 
+head(rare_df)
+# if we were to cut the depth, how rich is the data?
+#    sample depth  richness
+# 1 T1.BB.A   100  32.09711
+# 2 T1.BB.A   600  87.61957
+# 3 T1.BB.A  1100 116.29874
+# 4 T1.BB.A  1600 135.60161
+# 5 T1.BB.A  2100 149.81670
+# 6 T1.BB.A  2600 160.83206
+
 # COMBINE SAMPLE + FEATURE RETENTION
 retention_summary <- sample_retention %>%
   left_join(
@@ -803,6 +813,8 @@ ggplot(
   
   theme_classic(base_size = 18)
 
+
+
 # IDENTIFY THE HIGHEST DEPTH RETAINING >=80% OF SAMPLES
 if (nrow(acceptable_depths_80) > 0) {
   
@@ -854,8 +866,7 @@ if (nrow(acceptable_depths_90) > 0) {
 sample_sums(ps.skin)
 sort(sample_sums(ps.skin))
 
-## 10000 -> 43 samples lost - can do 9540 or 10060
-
+## 10000 -> 26 samples lost (we had 435) - can do _ or _
 ps.skin.rare <- rarefy_even_depth(
    ps.skin,
    sample.size = 10000,
@@ -863,6 +874,8 @@ ps.skin.rare <- rarefy_even_depth(
    rngseed = 1,
    verbose = FALSE
  )
+save.image(file = "ps.clean.RData")
+load("ps.clean.RData")
 
 #save.image(file = "ps.clean.RData")
 #load("ps.clean.RData")
@@ -903,9 +916,12 @@ sample_data(ps.pool)
 # restore metadata
 sample_data(ps.pool)$Treatment_main <- sample_names(ps.pool)
 print(sample_data(ps.pool)$Treatment_main)
+#  [1] "1_Hyp_25"  "1_Hyp_35"  "1_Norm_25" "1_Norm_35" "3_Hyp_25"  "3_Hyp_35"  "3_Norm_25"
+#  [8] "3_Norm_35" "4_Hyp_25"  "4_Hyp_35"  "4_Norm_25" "4_Norm_35"
 
 # check that there are correct number of pooled treatments
 print(nsamples(ps.pool))
+# 12 samples. This is correct
 
 # check names
 print(sample_names(ps.pool))
@@ -914,6 +930,9 @@ print(sample_names(ps.pool))
 ps.pool.perc <- transform_sample_counts(ps.pool, function(x) x/sum(x))
 
 # PHYLA
+install.packages("scico")
+library(ggplot2)
+library(scico)
 glom.p <- tax_glom(ps.pool.perc, taxrank = 'Phylum', NArm = FALSE)
 glom.p # should list # taxa as # phyla
 data_glom.p <- psmelt(glom.p) # create data frame from phyloseq object
@@ -924,7 +943,7 @@ data_glom.p$Phylum[data_glom.p$Abundance < 0.05] <- "<5% abundance features"
 
 # count # phyla to set colour palette
 Count = length(unique(data_glom.p$Phylum))
-Count # returns 8
+Count # returns 7 phyla
 
 unique(data_glom.p$Phylum)
 
@@ -1046,7 +1065,7 @@ data_glom.c$Class[data_glom.c$Abundance < 0.04] <- "<4% abundance features"
 
 # count # class to set colour palette
 Count.c = length(unique(data_glom.c$Class))
-Count.c
+Count.c # returns 10 classes
 
 unique(data_glom.c$Class)
 sort(unique(as.character(data_glom.c$Class)))
@@ -1099,7 +1118,7 @@ data_glom.o$Order[data_glom.o$Abundance < 0.04] <- "<4% abundance features"
 
 # count # order to set color palette
 Count.o = length(unique(data_glom.o$Order))
-Count.o
+Count.o # returns 13 orders
 
 unique(data_glom.o$Order)
 sort(unique(as.character(data_glom.o$Order)))
@@ -1412,7 +1431,9 @@ alpha_data$Week <- factor(
 ## Check this with:
 ################################################################################
 
-table(alpha_data$Week, alpha_data$Week_1)
+table(alpha_data$Week)
+#   A   R   S 
+# 143 130 136
 
 ################################################################################
 ## MODEL 1:
@@ -1584,6 +1605,7 @@ unif_dist    = phyloseq::distance(ps.skin.rare, method = "unifrac", weighted = F
 wunif_dist   = phyloseq::distance(ps.skin.rare, method = "unifrac", weighted = T)
 
 meta_df <- as(sample_data(ps.skin.rare), "data.frame")
+head(meta_df)
 
 
 ###############################################################
@@ -1600,9 +1622,9 @@ jacc.adonis.simple <- adonis2(
 )
 
 ## BRAY
+set.seed(123)
 bray.adonis.simple <- adonis2(
-  #  bray_dist ~ type_1 + stream_1 + location,
-  bray_dist ~ type_1 + latitude + location,
+  bray_dist ~ Week + Temp + Ox,
   data = meta_df,
   permutations = 9999,
   by = "margin"
@@ -1611,18 +1633,18 @@ bray.adonis.simple <- adonis2(
 ## UNIFRAC
 unif.adonis.simple <- adonis2(
   #unif_dist ~ type_1 + stream_1 + location,
-  unif_dist ~ type_1 + latitude + location,
+  unif_dist ~ Week + Temp + Ox,
   data = meta_df,
-  permutations = 9999,
+  permutations = 999,
   by = "margin"
 )
 
 ## WUNIFRAC
 wunif.adonis.simple <- adonis2(
   #  wunif_dist ~ type_1 + stream_1 + location,
-  wunif_dist ~ type_1 + latitude + location,
+  wunif_dist ~ Week + Temp + Ox,
   data = meta_df,
-  permutations = 9999,
+  permutations = 999,
   by = "margin"
 )
 
