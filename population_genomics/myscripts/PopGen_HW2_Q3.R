@@ -1,4 +1,4 @@
-# open vacc. nano?
+# open vacc
 # module load plink
 # set $DATA_DIR and VCF
 # prune for less strict (0.2 -> 0.5) LD threshold
@@ -142,10 +142,8 @@ ggsave(map_pca, file = paste0(OUTDIR, "/Lg_0.5_pca_map.png"), width = 8, height 
 # ADMIXTURE:
 # do not run on full VCF!
 # For running admixture, K is defined for the min/max populations estimated to run (it looks like a max of 5 populations)
-# when doing this and creating bash script, it says cd ~/popgen/class 2 in the code.
-# however, you want to add your full working directory instead (to _)
 
-# run bash script? admixture_hw2.sh. K1-9 (instead of 10) were only generated due to computational error.
+# run bash script: admixture_hw2.sh. K1-9 (instead of 10) were only generated due to computational error.
 
 #######################
 cv <- read_tsv("cv_errors.tsv", col_names = c("K", "CV_error"))
@@ -200,15 +198,3 @@ admix_plot <- ggplot(q_all, aes(ID, Ancestry, fill = Cluster)) +
 admix_plot
 
 ggsave(admix_plot, file = paste0(OUTDIR, "/admixture_K1-5_hw2.png"), width = 12, height = 7
-# Notes on new admixture:
-# ...
-
-### THESE NOTES ARE FROM THE IN-CLASS ASSIGNMENT! OLD ADMIXTURE:
-# Looking at this admixture (which is by latitude: north/south), we could surmise that...
-# this agrees with our PCA. K=1 and K=3, which were outliers/genetically diff, are actually separate from each other(?)
-# K=5 has very bad error rate (too spiky/random forced pink/messy), so data may be inaccurate
-# can gage K=2 and K=3 for population structure
-# in a perfect world, K=3 (3 pops aka 3 colors) would be completely green in one area, pea green in the other section, and all red in the other
-# consistently across K=2 to K=5, the colors in Bahlia Asuncion for example are different
-# Why are these groups distinctively different? Is it environmentally driven? We will get to this after looking into genetic diversity.
-# The Southernmost groups are most different
